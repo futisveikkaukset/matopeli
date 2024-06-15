@@ -193,9 +193,11 @@ function updateHighScores() {
 }
 
 function placeFood() {
+    const cols = Math.floor(playArea.width / gridSize);
+    const rows = Math.floor(playArea.height / gridSize);
     food = {
-        x: playArea.x1 + Math.floor(Math.random() * playArea.width / gridSize) * gridSize,
-        y: playArea.y1 + Math.floor(Math.random() * playArea.height / gridSize) * gridSize
+        x: playArea.x1 + Math.floor(Math.random() * cols) * gridSize,
+        y: playArea.y1 + Math.floor(Math.random() * rows) * gridSize
     };
 }
 
