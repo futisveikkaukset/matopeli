@@ -13,27 +13,54 @@ const originalPlayArea = {
 let playArea = {...originalPlayArea};
 
 const gridSize = 20;
-let snake = [{x: playArea.x1 + gridSize * 5, y: playArea.y1 + gridSize * 5}];
+let snake = [];
 let direction = {x: gridSize, y: 0};
-let food = {
-    x: playArea.x1 + Math.floor(Math.random() * playArea.width / gridSize) * gridSize,
-    y: playArea.y1 + Math.floor(Math.random() * playArea.height / gridSize) * gridSize
-};
+let food = {};
 let score = 0;
 let highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+let gameRunning = false;
+let countdown = 3; // Laskuriarvo
 
 // Load background image
 const backgroundImage = new Image();
 backgroundImage.src = 'pelialue.png';
 backgroundImage.onload = function() {
     resizeCanvas();
-    gameLoop();
+    startCountdown();
 };
 
+function startCountdown() {
+    const countdownInterval = setInterval(() => {
+        drawCountdown();
+        countdown--;
+        if (countdown < 0) {
+            clearInterval(countdownInterval);
+            startGame();
+        }
+    }, 1000);
+}
+
+function drawCountdown() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#fff';
+    ctx.font = '48px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText(`Game starts in ${countdown}`, canvas.width / 2, canvas.height / 2);
+}
+
+function startGame() {
+    resetGame(); // Ensure the game is reset before starting
+    gameRunning = true;
+    gameLoop();
+}
+
 function gameLoop() {
-    update();
-    draw();
-    setTimeout(gameLoop, 100);
+    if (gameRunning) {
+        update();
+        draw();
+        setTimeout(gameLoop, 100);
+    }
 }
 
 function update() {
@@ -42,10 +69,7 @@ function update() {
     if (head.x === food.x && head.y === food.y) {
         snake.push({});
         score++;
-        food = {
-            x: playArea.x1 + Math.floor(Math.random() * playArea.width / gridSize) * gridSize,
-            y: playArea.y1 + Math.floor(Math.random() * playArea.height / gridSize) * gridSize
-        };
+        placeFood();
     }
 
     for (let i = snake.length - 1; i > 0; i--) {
@@ -90,15 +114,14 @@ function changeDirection(event) {
 function resetGame() {
     snake = [{x: playArea.x1 + gridSize * 5, y: playArea.y1 + gridSize * 5}];
     direction = {x: gridSize, y: 0};
-    food = {
-        x: playArea.x1 + Math.floor(Math.random() * playArea.width / gridSize) * gridSize,
-        y: playArea.y1 + Math.floor(Math.random() * playArea.height / gridSize) * gridSize
-    };
     score = 0;
+    placeFood();
+    gameRunning = false;
     document.getElementById('gameOverModal').style.display = 'none';
 }
 
 function endGame() {
+    gameRunning = false;
     document.getElementById('finalScore').innerText = score;
     document.getElementById('gameOverModal').style.display = 'block';
 }
@@ -125,7 +148,25 @@ function updateHighScores() {
     });
 }
 
+function placeFood() {
+    food = {
+        x: playArea.x1 + Math.floor(Math.random() * playArea.width / gridSize) * gridSize,
+        y: playArea.y1 + Math.floor(Math.random() * playArea.height / gridSize) * gridSize
+    };
+}
+
+function startNewGame() {
+    document.getElementById('gameOverModal').style.display = 'none';
+    countdown = 3;
+    startCountdown();
+}
+
 document.addEventListener('keydown', changeDirection);
+document.addEventListener('keydown', function(event) {
+    if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(event.key)) {
+        event.preventDefault();
+    }
+});
 window.addEventListener('resize', resizeCanvas);
 updateHighScores();
 
