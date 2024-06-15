@@ -25,6 +25,7 @@ let touchStartY = 0;
 let touchEndX = 0;
 let touchEndY = 0;
 let gameSpeed = 100; // Peli nopeus
+const tolerance = gridSize / 2; // Toleranssi ruoan tunnistamiselle
 
 // Load background image
 const backgroundImage = new Image();
@@ -75,7 +76,7 @@ function gameLoop() {
 function update() {
     const head = {x: snake[0].x + direction.x, y: snake[0].y + direction.y};
 
-    if (head.x === food.x && head.y === food.y) {
+    if (Math.abs(head.x - food.x) < tolerance && Math.abs(head.y - food.y) < tolerance) {
         snake.push({});
         score++;
         placeFood();
@@ -237,11 +238,11 @@ function resizeCanvas() {
 
     // Scale snake and food positions
     snake = snake.map(segment => ({
-        x: Math.round(segment.x * scale),
-        y: Math.round(segment.y * scale)
+        x: segment.x * scale,
+        y: segment.y * scale
     }));
     food = {
-        x: Math.round(food.x * scale),
-        y: Math.round(food.y * scale)
+        x: food.x * scale,
+        y: food.y * scale
     };
 }
