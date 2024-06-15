@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000;
+            color: #fff;
+        }
+        canvas {
+            border: 1px solid #fff;
+        }
+        #gameOverModal {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border: 2px solid #fff;
+            text-align: center;
+        }
+        #highScores {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="920" height="720"></canvas>
+    <div id="gameOverModal">
+        <p>Game Over! Your score: <span id="finalScore"></span></p>
+        <label for="playerName">Enter your name:</label>
+        <input type="text" id="playerName" maxlength="10">
+        <button onclick="saveScore()">Save</button>
+    </div>
+    <div id="highScores">
+        <h2>Top 10 Players</h2>
+        <ol id="scoreList"></ol>
+    </div>
+    <script src="snake.js"></script>
+</body>
+</html>
