@@ -17,6 +17,10 @@
         }
         canvas {
             border: 1px solid #fff;
+            width: 100%;
+            height: auto;
+            max-width: 920px;  /* Alkuperäinen kanvaskoko */
+            max-height: 720px;  /* Alkuperäinen kanvaskoko */
         }
         #gameOverModal {
             display: none;
@@ -52,21 +56,21 @@
 </head>
 <body>
     <canvas id="gameCanvas" width="920" height="720"></canvas>
-    <div id="gameOverModal">
-        <p>Game Over! Your score: <span id="finalScore"></span></p>
-        <label for="playerName">Enter your name:</label>
-        <input type="text" id="playerName" maxlength="10">
-        <button onclick="saveScore()">Save</button>
-    </div>
-    <div id="highScores">
-        <h2>Top 10 Players</h2>
-        <ol id="scoreList"></ol>
-    </div>
     <div class="controls">
         <button class="control-button" onclick="changeDirection({key: 'ArrowUp'})">Up</button>
         <button class="control-button" onclick="changeDirection({key: 'ArrowLeft'})">Left</button>
         <button class="control-button" onclick="changeDirection({key: 'ArrowDown'})">Down</button>
         <button class="control-button" onclick="changeDirection({key: 'ArrowRight'})">Right</button>
+    </div>
+    <div id="highScores">
+        <h2>Top 10 Players</h2>
+        <ol id="scoreList"></ol>
+    </div>
+    <div id="gameOverModal">
+        <p>Game Over! Your score: <span id="finalScore"></span></p>
+        <label for="playerName">Enter your name:</label>
+        <input type="text" id="playerName" maxlength="10">
+        <button onclick="saveScore()">Save</button>
     </div>
     <script src="snake.js"></script>
 </body>

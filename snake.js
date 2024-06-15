@@ -1,7 +1,7 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-const playArea = {
+const originalPlayArea = {
     x1: 138,
     y1: 109,
     x2: 788,
@@ -9,6 +9,8 @@ const playArea = {
     width: 788 - 138,
     height: 606 - 109
 };
+
+let playArea = {...originalPlayArea};
 
 const gridSize = 20;
 let snake = [{x: playArea.x1 + gridSize * 5, y: playArea.y1 + gridSize * 5}];
@@ -24,6 +26,7 @@ let highScores = JSON.parse(localStorage.getItem('highScores')) || [];
 const backgroundImage = new Image();
 backgroundImage.src = 'pelialue.png';
 backgroundImage.onload = function() {
+    resizeCanvas();
     gameLoop();
 };
 
@@ -123,4 +126,30 @@ function updateHighScores() {
 }
 
 document.addEventListener('keydown', changeDirection);
+window.addEventListener('resize', resizeCanvas);
 updateHighScores();
+
+function resizeCanvas() {
+    const scale = Math.min(window.innerWidth / 920, window.innerHeight / 720);
+    canvas.width = 920 * scale;
+    canvas.height = 720 * scale;
+
+    playArea = {
+        x1: originalPlayArea.x1 * scale,
+        y1: originalPlayArea.y1 * scale,
+        x2: originalPlayArea.x2 * scale,
+        y2: originalPlayArea.y2 * scale,
+        width: originalPlayArea.width * scale,
+        height: originalPlayArea.height * scale
+    };
+
+    // Scale snake and food positions
+    snake = snake.map(segment => ({
+        x: segment.x * scale,
+        y: segment.y * scale
+    }));
+    food = {
+        x: food.x * scale,
+        y: food.y * scale
+    };
+}
