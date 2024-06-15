@@ -12,7 +12,7 @@ const originalPlayArea = {
 
 let playArea = {...originalPlayArea};
 
-const gridSize = 20;
+let gridSize = 20;
 let snake = [];
 let direction = {x: gridSize, y: 0};
 let food = {};
@@ -24,6 +24,7 @@ let touchStartX = 0;
 let touchStartY = 0;
 let touchEndX = 0;
 let touchEndY = 0;
+let gameSpeed = 100; // Peli nopeus
 
 // Load background image
 const backgroundImage = new Image();
@@ -67,7 +68,7 @@ function gameLoop() {
     if (gameRunning) {
         update();
         draw();
-        setTimeout(gameLoop, 100);
+        setTimeout(gameLoop, gameSpeed);
     }
 }
 
@@ -226,6 +227,9 @@ function resizeCanvas() {
         width: originalPlayArea.width * scale,
         height: originalPlayArea.height * scale
     };
+
+    gridSize = 20 * scale;
+    gameSpeed = 100 / scale;  // Adjust game speed based on scale
 
     // Scale snake and food positions
     snake = snake.map(segment => ({
