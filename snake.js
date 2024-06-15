@@ -35,7 +35,7 @@ backgroundImage.onload = function() {
 
 function startCountdown() {
     const countdownInterval = setInterval(() => {
-        drawCountdown();
+        drawInstructionsAndCountdown();
         countdown--;
         if (countdown < 0) {
             clearInterval(countdownInterval);
@@ -44,13 +44,17 @@ function startCountdown() {
     }, 1000);
 }
 
-function drawCountdown() {
+function drawInstructionsAndCountdown() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+    
     ctx.fillStyle = '#fff';
-    ctx.font = '48px Arial';
+    ctx.font = '24px Arial';
     ctx.textAlign = 'center';
-    ctx.fillText(`Game starts in ${countdown}`, canvas.width / 2, canvas.height / 2);
+    ctx.fillText('Use Arrow Keys on PC or Swipe on Mobile to control the snake.', canvas.width / 2, canvas.height / 2 - 40);
+    
+    ctx.font = '48px Arial';
+    ctx.fillText(`Game starts in ${countdown}`, canvas.width / 2, canvas.height / 2 + 20);
 }
 
 function startGame() {
@@ -115,7 +119,16 @@ function changeDirection(event) {
     }
 }
 
-function handleSwipe() {
+function handleTouchStart(event) {
+    touchStartX = event.touches[0].clientX;
+    touchStartY = event.touches[0].clientY;
+    event.preventDefault();
+}
+
+function handleTouchMove(event) {
+    touchEndX = event.touches[0].clientX;
+    touchEndY = event.touches[0].clientY;
+
     const diffX = touchEndX - touchStartX;
     const diffY = touchEndY - touchStartY;
 
@@ -134,18 +147,12 @@ function handleSwipe() {
             changeDirection({key: 'ArrowUp'});
         }
     }
+
+    event.preventDefault();
 }
 
-canvas.addEventListener('touchstart', function(event) {
-    touchStartX = event.changedTouches[0].screenX;
-    touchStartY = event.changedTouches[0].screenY;
-}, false);
-
-canvas.addEventListener('touchend', function(event) {
-    touchEndX = event.changedTouches[0].screenX;
-    touchEndY = event.changedTouches[0].screenY;
-    handleSwipe();
-}, false);
+canvas.addEventListener('touchstart', handleTouchStart, false);
+canvas.addEventListener('touchmove', handleTouchMove, false);
 
 function resetGame() {
     snake = [{x: playArea.x1 + gridSize * 5, y: playArea.y1 + gridSize * 5}];
