@@ -129,6 +129,29 @@ document.addEventListener('keydown', changeDirection);
 window.addEventListener('resize', resizeCanvas);
 updateHighScores();
 
+const touchArea = document.getElementById('touchArea');
+touchArea.addEventListener('touchstart', handleTouch);
+touchArea.addEventListener('touchmove', handleTouch);
+
+function handleTouch(event) {
+    const touch = event.touches[0];
+    const rect = touchArea.getBoundingClientRect();
+    const x = touch.clientX - rect.left;
+    const y = touch.clientY - rect.top;
+
+    if (x < 50) {
+        changeDirection({key: 'ArrowLeft'});
+    } else if (x > 100) {
+        changeDirection({key: 'ArrowRight'});
+    } else if (y < 50) {
+        changeDirection({key: 'ArrowUp'});
+    } else if (y > 100) {
+        changeDirection({key: 'ArrowDown'});
+    }
+
+    event.preventDefault();
+}
+
 function resizeCanvas() {
     const scale = Math.min(window.innerWidth / 920, window.innerHeight / 720);
     canvas.width = 920 * scale;
