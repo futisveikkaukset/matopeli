@@ -20,6 +20,10 @@ let score = 0;
 let highScores = JSON.parse(localStorage.getItem('highScores')) || [];
 let gameRunning = false;
 let countdown = 3; // Laskuriarvo
+let touchStartX = 0;
+let touchStartY = 0;
+let touchEndX = 0;
+let touchEndY = 0;
 
 // Load background image
 const backgroundImage = new Image();
@@ -111,6 +115,38 @@ function changeDirection(event) {
     }
 }
 
+function handleSwipe() {
+    const diffX = touchEndX - touchStartX;
+    const diffY = touchEndY - touchStartY;
+
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+        // Horizontal swipe
+        if (diffX > 0) {
+            changeDirection({key: 'ArrowRight'});
+        } else {
+            changeDirection({key: 'ArrowLeft'});
+        }
+    } else {
+        // Vertical swipe
+        if (diffY > 0) {
+            changeDirection({key: 'ArrowDown'});
+        } else {
+            changeDirection({key: 'ArrowUp'});
+        }
+    }
+}
+
+canvas.addEventListener('touchstart', function(event) {
+    touchStartX = event.changedTouches[0].screenX;
+    touchStartY = event.changedTouches[0].screenY;
+}, false);
+
+canvas.addEventListener('touchend', function(event) {
+    touchEndX = event.changedTouches[0].screenX;
+    touchEndY = event.changedTouches[0].screenY;
+    handleSwipe();
+}, false);
+
 function resetGame() {
     snake = [{x: playArea.x1 + gridSize * 5, y: playArea.y1 + gridSize * 5}];
     direction = {x: gridSize, y: 0};
@@ -169,29 +205,6 @@ document.addEventListener('keydown', function(event) {
 });
 window.addEventListener('resize', resizeCanvas);
 updateHighScores();
-
-const touchArea = document.getElementById('touchArea');
-touchArea.addEventListener('touchstart', handleTouch);
-touchArea.addEventListener('touchmove', handleTouch);
-
-function handleTouch(event) {
-    const touch = event.touches[0];
-    const rect = touchArea.getBoundingClientRect();
-    const x = touch.clientX - rect.left;
-    const y = touch.clientY - rect.top;
-
-    if (x < 50) {
-        changeDirection({key: 'ArrowLeft'});
-    } else if (x > 100) {
-        changeDirection({key: 'ArrowRight'});
-    } else if (y < 50) {
-        changeDirection({key: 'ArrowUp'});
-    } else if (y > 100) {
-        changeDirection({key: 'ArrowDown'});
-    }
-
-    event.preventDefault();
-}
 
 function resizeCanvas() {
     const scale = Math.min(window.innerWidth / 920, window.innerHeight / 720);
