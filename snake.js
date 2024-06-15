@@ -104,7 +104,9 @@ function draw() {
     ctx.fillRect(food.x, food.y, gridSize, gridSize);
 
     ctx.fillStyle = '#fff';
-    ctx.fillText(`Score: ${score}`, 10, 20);
+    ctx.font = '20px Arial';
+    ctx.textAlign = 'center';
+    ctx.fillText(`Score: ${score}`, canvas.width / 2, 30); // Pisteet keskellä ylhäällä
 }
 
 function changeDirection(event) {
@@ -235,11 +237,11 @@ function resizeCanvas() {
 
     // Scale snake and food positions
     snake = snake.map(segment => ({
-        x: segment.x * scale,
-        y: segment.y * scale
+        x: Math.round(segment.x * scale),
+        y: Math.round(segment.y * scale)
     }));
     food = {
-        x: food.x * scale,
-        y: food.y * scale
+        x: Math.round(food.x * scale),
+        y: Math.round(food.y * scale)
     };
 }
