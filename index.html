@@ -32,6 +32,18 @@
         #highScores {
             margin-top: 20px;
         }
+        .controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .control-button {
+            background-color: #fff;
+            border: 1px solid #000;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -45,6 +57,12 @@
     <div id="highScores">
         <h2>Top 10 Players</h2>
         <ol id="scoreList"></ol>
+    </div>
+    <div class="controls">
+        <button class="control-button" onclick="changeDirection({key: 'ArrowUp'})">Up</button>
+        <button class="control-button" onclick="changeDirection({key: 'ArrowLeft'})">Left</button>
+        <button class="control-button" onclick="changeDirection({key: 'ArrowDown'})">Down</button>
+        <button class="control-button" onclick="changeDirection({key: 'ArrowRight'})">Right</button>
     </div>
     <script src="snake.js"></script>
 </body>
