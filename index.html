@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fi">
 <head>
-    <meta charset="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>Snake Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matopeli</title>
     <style>
         body {
             display: flex;
@@ -66,15 +66,15 @@
 <body>
     <canvas id="gameCanvas"></canvas>
     <div id="highScores">
-        <h2>Top 10 Players</h2>
+        <h2>Top 10 Pelaajat</h2>
         <ol id="scoreList"></ol>
     </div>
     <div id="gameOverModal">
-        <p>Game Over! Your score: <span id="finalScore"></span></p>
-        <label for="playerName">Enter your name:</label>
+        <p>Peli päättyi! Pisteesi: <span id="finalScore"></span></p>
+        <label for="playerName">Syötä nimesi:</label>
         <input type="text" id="playerName" maxlength="10">
-        <button onclick="saveScore()">Save</button>
-        <button class="new-game-button" onclick="startNewGame()">New Game</button>
+        <button onclick="saveScore()">Tallenna</button>
+        <button class="new-game-button" onclick="startNewGame()">Uusi peli</button>
     </div>
     <script src="snake.js"></script>
 </body>

@@ -27,7 +27,7 @@ let touchEndY = 0;
 let gameSpeed = 100; // Peli nopeus
 const tolerance = gridSize / 2; // Toleranssi ruoan tunnistamiselle
 
-// Load background image
+// Ladataan taustakuva
 const backgroundImage = new Image();
 backgroundImage.src = 'pelialue.png';
 backgroundImage.onload = function() {
@@ -53,14 +53,14 @@ function drawInstructionsAndCountdown() {
     ctx.fillStyle = '#fff';
     ctx.font = '24px Arial';
     ctx.textAlign = 'center';
-    ctx.fillText('Use Arrow Keys on PC or Swipe on Mobile to control the snake.', canvas.width / 2, canvas.height / 2 - 40);
+    ctx.fillText('Ohjaa matoa nuolinäppäimillä tietokoneella tai pyyhkäisemällä mobiililaitteella.', canvas.width / 2, canvas.height / 2 - 40);
     
     ctx.font = '48px Arial';
-    ctx.fillText(`Game starts in ${countdown}`, canvas.width / 2, canvas.height / 2 + 20);
+    ctx.fillText(`Peli alkaa ${countdown} sekunnin päästä`, canvas.width / 2, canvas.height / 2 + 20);
 }
 
 function startGame() {
-    resetGame(); // Ensure the game is reset before starting
+    resetGame(); // Varmistetaan, että peli nollataan ennen aloitusta
     gameRunning = true;
     gameLoop();
 }
@@ -107,7 +107,7 @@ function draw() {
     ctx.fillStyle = '#fff';
     ctx.font = '20px Arial';
     ctx.textAlign = 'center';
-    ctx.fillText(`Score: ${score}`, canvas.width / 2, 30); // Pisteet keskellä ylhäällä
+    ctx.fillText(`Pisteet: ${score}`, canvas.width / 2, 30); // Pisteet keskellä ylhäällä
 }
 
 function changeDirection(event) {
@@ -137,14 +137,14 @@ function handleTouchMove(event) {
     const diffY = touchEndY - touchStartY;
 
     if (Math.abs(diffX) > Math.abs(diffY)) {
-        // Horizontal swipe
+        // Vaakasuuntainen pyyhkäisy
         if (diffX > 0) {
             changeDirection({key: 'ArrowRight'});
         } else {
             changeDirection({key: 'ArrowLeft'});
         }
     } else {
-        // Vertical swipe
+        // Pystysuuntainen pyyhkäisy
         if (diffY > 0) {
             changeDirection({key: 'ArrowDown'});
         } else {
@@ -234,9 +234,9 @@ function resizeCanvas() {
     };
 
     gridSize = 20 * scale;
-    gameSpeed = 100 / scale;  // Adjust game speed based on scale
+    gameSpeed = 100 / scale;  // Säädetään pelinopeus skaalauksen perusteella
 
-    // Scale snake and food positions
+    // Skaalataan käärmeen ja ruoan koordinaatit
     snake = snake.map(segment => ({
         x: segment.x * scale,
         y: segment.y * scale
